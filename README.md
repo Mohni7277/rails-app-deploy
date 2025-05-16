@@ -1,7 +1,7 @@
-Kubernetes Deployment with PostgreSQL StatefulSet
+# Kubernetes Deployment with PostgreSQL StatefulSet
 This repository contains Kubernetes YAML configurations to deploy a sample application with a PostgreSQL database using a StatefulSet. The setup can be run on any local Kubernetes cluster like Minikube or K3d.
 
-Prerequisites
+**Prerequisites**
 Kubernetes cluster (Minikube, K3d, or similar)
 
 kubectl configured to access your cluster
@@ -10,7 +10,7 @@ kubectl configured to access your cluster
 
 (Optional) Service mesh (Istio, Linkerd, etc.) if you plan to use one
 
-Deployment Structure
+**Deployment Structure**
 The deployment consists of:
 
 A StatefulSet for PostgreSQL with persistent storage
@@ -21,7 +21,7 @@ Services for both components
 
 (Optional) Ingress resource for external access
 
-Files
+**Files**
 postgres-statefulset.yaml: PostgreSQL StatefulSet with persistent volume claim
 
 postgres-service.yaml: Headless service for PostgreSQL
@@ -32,34 +32,37 @@ app-service.yaml: Service for the application
 
 ingress.yaml: (Optional) Ingress configuration
 
-Deployment Steps
+# Deployment Steps
 Start your local Kubernetes cluster:
 
 bash
 minikube start
-# or
+
 k3d cluster create mycluster
-Deploy PostgreSQL:
+
+# Deploy PostgreSQL:
 
 bash
 kubectl apply -f postgres-statefulset.yaml
 kubectl apply -f postgres-service.yaml
-Deploy the application:
+
+# Deploy the application:
 
 bash
 kubectl apply -f app-deployment.yaml
 kubectl apply -f app-service.yaml
-(Optional) Deploy Ingress:
+# (Optional) Deploy Ingress:
 
 bash
 kubectl apply -f ingress.yaml
-Verify the deployment:
+# Verify the deployment:
 
 bash
 kubectl get all
 kubectl get pvc
 kubectl get pods
-Accessing the Application
+
+# Accessing the Application
 For ClusterIP service:
 
 bash
@@ -76,7 +79,7 @@ bash
 minikube addons enable ingress
 Then access using the hostname defined in the ingress resource
 
-Customization
+# Customization
 Update the database credentials in postgres-statefulset.yaml
 
 Modify the application image in app-deployment.yaml
