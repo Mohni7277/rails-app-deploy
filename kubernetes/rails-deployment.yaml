@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-app
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: rails-app
+  template:
+    metadata:
+      labels:
+        app: rails-app
+    spec:
+      containers:
+      - name: myapp-web
+        image: myapp-web:latest
+        imagePullPolicy: Never
+        env:
+        - name: RAILS_ENV
+          value: "development"
+        - name: DATABASE_URL
+          value: "postgres://postgres:$(DB_PASSWORD)@postgres:5432/app_development"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: password
+        - name: RAILS_MASTER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: master-key
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              name: rails-secrets
+              key: secret-key-base
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10

@@ -1,0 +1,11 @@
+# rails-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: rails-app
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: rails-app
